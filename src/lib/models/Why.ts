@@ -1,17 +1,21 @@
-import { generateUUID } from '../utils/uuid';
-
-// Why model. Tracks why's across all objects in one place
-
+import { cleanTitle } from '$lib/models/model_helpers';
+import { v5 as uuidv5 } from 'uuid';
+export const WHY_NAMESPACE = '3008e34d-d2f8-4cdc-b846-adf9e0cf0ffe';
 export interface Why {
-	id: string;
+	uuid: string; // Use uuid v5 for reproducible idntifier ;
+	title: string;
 	description: string; // Reason or motivation
-	relatedIds: number[]; // IDs of linked Journeys or Waypoints
+	similarWhys: string[]; // Related motivations, uuids
+	createdAt: Date;
 }
 
-export function createWhy(description: string, relatedIds: number[] = []): Why {
+export function createWhy(title: string, description: string = ''): Why {
+	title = cleanTitle(title);
 	return {
-		id: generateUUID(), // Unique identifier
-		description,
-		relatedIds
+		uuid: uuidv5(title, WHY_NAMESPACE), // Unique identifier
+		title,
+		description: description.trim(),
+		similarWhys: [],
+		createdAt: new Date()
 	};
 }

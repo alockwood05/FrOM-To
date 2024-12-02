@@ -1,5 +1,6 @@
+import { cleanTitle } from '$lib/models/model_helpers';
 import type { Journey } from './Journey';
-import { generateUUID } from '../utils/uuid';
+import { v6 as uuidv6 } from 'uuid';
 
 // Milestone Model: Tracks major progress markers or achievements within a journey.
 
@@ -9,7 +10,7 @@ export interface Milestone {
 	description: string; // Details about the milestone
 	dueDate?: Date; // Optional deadline for the milestone
 	status: 'pending' | 'in-progress' | 'achieved'; // Current state
-	journeyId: number; // ID of the associated Journey
+	journeyUUID: string; // ID of the associated Journey
 	createdAt: Date; // Timestamp when the milestone was created
 	updatedAt: Date; // Timestamp when the milestone was last updated
 }
@@ -17,17 +18,18 @@ export interface Milestone {
 export function createMilestone(
 	title: string,
 	description: string = '',
-	journeyId: number,
+	journeyUUID: string,
 	dueDate?: Date
 ): Milestone {
 	const nowDate = new Date();
+
 	return {
-		uuid: generateUUID(), // Unique identifier
-		title,
-		description,
+		uuid: uuidv6(), // Unique identifier
+		title: cleanTitle(title),
+		description: description.trim(),
 		dueDate,
 		status: 'pending', // Initial status
-		journeyId, // Links the milestone to a specific journey
+		journeyUUID, // Links the milestone to a specific journey
 		createdAt: nowDate,
 		updatedAt: nowDate
 	};
