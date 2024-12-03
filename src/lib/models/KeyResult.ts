@@ -1,26 +1,65 @@
 // KeyResult model. A centralized list of all Key Results
-import type { Journey } from './Journey';
+
+import { cleanTitle } from './shared';
+import { v5 as uuidv5 } from 'uuid';
+
+export const KR_NAMESPACE = '1a3c758f-03ac-4246-b6b1-e27b2e3e6b2c'; // Random UUID (V4)
+
+type KRStatus = 'not-started' | 'in-progress' | 'achieved';
+
+type KRNominalMetric = {
+	type: 'nominal_target';
+	targetValue: number;
+	currentValue: number;
+};
+
+type KRCompletionPercentageMetric = {
+	type: 'completion_percentage';
+	targetValue: number;
+	currentValue: number;
+};
+
+type KRBinaryMetric = {
+	type: 'binary';
+	isComplete: boolean;
+};
+
+type KRCustomOutcome = {
+	title: string;
+	description: string;
+	isComplete: boolean;
+	isTarget: boolean;
+};
+
+type KRCustomOutcomesMetric = {
+	type: 'custom_outcomes';
+	outcomes: KRCustomOutcome[];
+};
 
 export interface KeyResult {
-	id: number;
+	uuid: string;
 	title: string; // Name or description of the key result
-	targetValue: number | string; // The goal value (e.g., "10k in 60 mins" or 100%)
-	currentValue: number | string; // Current progress toward the goal
-	status: 'not-started' | 'in-progress' | 'achieved'; // Status of the key result
-	journeys: number; // ID of the associated journey
+	description: string; // Additional details about the key result
+	krStatus: KRStatus; // Status of the key result
+	metrics?:
+		| KRNominalMetric
+		| KRCompletionPercentageMetric
+		| KRBinaryMetric
+		| KRCustomOutcomesMetric;
+	archived: boolean; // Whether the key result is archived
+	createdAt: Date; // Date the key result was created
+	updatedAt: Date; // Date the key result was last updated
 }
 
-export function createKeyResult(
-	title: string,
-	targetValue: number | string,
-	journeyId: number
-): KeyResult {
+export function createKeyResult(title: string, description: string = ''): KeyResult {
+	title = cleanTitle(title);
 	return {
-		id: Date.now(), // Unique identifier
+		uuid: uuidv5(title, KR_NAMESPACE), // unique title enforced by UUID v5
 		title,
-		targetValue,
-		currentValue: 0, // Initial progress value
-		status: 'not-started', // Initial status
-		journeyId // Links the key result to a specific journey
+		description,
+		krStatus: 'not-started', // Initial status
+		archived: false, // Not archived by default
+		createdAt: new Date(),
+		updatedAt: new Date()
 	};
 }

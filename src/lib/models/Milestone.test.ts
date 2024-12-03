@@ -15,7 +15,7 @@ describe('Milestone Model', () => {
 		expect(milestone.title).toBe(title);
 		expect(milestone.description).toBe(description);
 		expect(milestone.dueDate).toBe(dueDate);
-		expect(milestone.status).toBe('pending');
+		expect(milestone.status).toBe('idea');
 		expect(milestone.journeyUUID).toBe(journeyUUID);
 		expect(milestone.createdAt).toBeInstanceOf(Date);
 		expect(milestone.updatedAt).toBeInstanceOf(Date);
@@ -30,7 +30,7 @@ describe('Milestone Model', () => {
 		expect(milestone.title).toBe(title);
 		expect(milestone.description).toBe('');
 		expect(milestone.dueDate).toBeUndefined();
-		expect(milestone.status).toBe('pending');
+		expect(milestone.status).toBe('idea');
 		expect(milestone.journeyUUID).toBe(journeyUUID);
 		expect(milestone.createdAt).toBeInstanceOf(Date);
 		expect(milestone.updatedAt).toBeInstanceOf(Date);

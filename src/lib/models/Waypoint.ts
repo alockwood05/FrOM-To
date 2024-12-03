@@ -1,25 +1,30 @@
+import { cleanTitle, type Status } from './shared';
+import { v6 as uuidv6 } from 'uuid';
 export interface Step {
 	id: number;
 	description: string;
-	status: 'pending' | 'in-progress' | 'complete';
+	status: Status;
 }
 
-// Waypoint Model. An achievable chunk of work.
-
+// Waypoint: An achievable chunk of work.
 export interface Waypoint {
-	id: number;
+	uuid: string;
 	title: string;
 	description: string;
-	status: 'incomplete' | 'in-progress' | 'complete';
+	status: Status;
 	steps: Step[]; // List of testable/verifiable steps
+	createdAt: Date;
+	updatedAt: Date;
 }
 
 export function createWaypoint(title: string, description: string = ''): Waypoint {
 	return {
-		id: Date.now(), // Unique identifier
-		title,
+		uuid: uuidv6(), // Unique identifier
+		title: cleanTitle(title),
 		description,
-		status: 'incomplete', // Initial status
-		steps: [] // Empty list of steps
+		status: 'idea', // Initial status
+		steps: [], // Empty list of steps
+		createdAt: new Date(),
+		updatedAt: new Date()
 	};
 }

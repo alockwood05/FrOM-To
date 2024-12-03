@@ -1,6 +1,13 @@
-// functions that clean and validate data to asign to models
-// shared helper fns
+// shared types
+export type Status =
+	| 'idea' // Ideation
+	| 'planned' // Planning
+	| 'up-next' // Prioritization
+	| 'in-progress' // Execution
+	| 'pending-approval' // Verification
+	| 'complete'; // Completion
 
+// shared functions
 export function cleanTitle(title: string) {
 	const trimmedTitle = title.trim();
 	const isValid = trimmedTitle.length >= 4 && /^[a-zA-Z0-9\s]+$/.test(trimmedTitle);
@@ -10,9 +17,4 @@ export function cleanTitle(title: string) {
 		);
 	}
 	return trimmedTitle;
-}
-
-export function isValidUUID(uuid: string): uuid is UUID {
-	const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-	return uuidRegex.test(uuid);
 }

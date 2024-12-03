@@ -1,15 +1,13 @@
-import { cleanTitle } from '$lib/models/model_helpers';
+import { cleanTitle } from './shared';
 import { v6 as uuidv6 } from 'uuid';
 
 export interface Alignment {
 	uuid: string; // Unique identifier for the alignment
 	title: string; // Core value name, e.g., "Health"
 	description: string; // Brief explanation or guiding principle
-	whyUUIDs: string[]; // Related motivations
-	meta: {}; // Tags for categorization
+	isArchived: boolean; // Whether the alignment is archived
 	createdAt: Date; // Timestamp of creation
 	updatedAt: Date; // Timestamp of last update
-	status: 'active' | 'archived'; // State of the alignment
 }
 
 /**
@@ -26,10 +24,8 @@ export function createAlignment(
 		uuid: uuidv6(),
 		title: cleanTitle(title),
 		description,
-		whyUUIDs,
-		meta: {},
+		isArchived: false,
 		createdAt: new Date(),
-		updatedAt: new Date(),
-		status: 'active'
+		updatedAt: new Date()
 	};
 }
