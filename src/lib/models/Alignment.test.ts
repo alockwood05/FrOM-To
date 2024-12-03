@@ -1,7 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { createAlignment } from '$lib/models/Alignment';
 import { cleanTitle } from '$lib/models/model_helpers';
-import { v6 as uuidv6 } from 'uuid';
 
 vi.mock('uuid', () => ({
 	v6: vi.fn(() => 'mock-uuid')
@@ -41,6 +40,31 @@ describe('createAlignment', () => {
 		expect(alignment.createdAt).toBeInstanceOf(Date);
 		expect(alignment.updatedAt).toBeInstanceOf(Date);
 	});
+
+	it('should call cleanTitle with the given title', () => {
+		const title = ' Health ';
+		createAlignment(title);
+
+		expect(cleanTitle).toHaveBeenCalledWith(' Health ');
+	});
+
+	it('should set the status to active by default', () => {
+		const title = 'Health';
+		const alignment = createAlignment(title);
+
+		expect(alignment.status).toBe('active');
+	});
+
+	it('should set the createdAt and updatedAt to the current date', () => {
+		const title = 'Health';
+		const now = new Date();
+		vi.setSystemTime(now);
+		const alignment = createAlignment(title);
+
+		expect(alignment.createdAt).toEqual(now);
+		expect(alignment.updatedAt).toEqual(now);
+	});
+});
 
 	it('should call cleanTitle with the given title', () => {
 		const title = ' Health ';
