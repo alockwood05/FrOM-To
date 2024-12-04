@@ -1,5 +1,6 @@
 import { cleanTitle } from '$lib/models/shared';
 import { v5 as uuidv5 } from 'uuid';
+
 export const WHY_NAMESPACE = '3008e34d-d2f8-4cdc-b846-adf9e0cf0ffe';
 export interface Why {
 	uuid: string; // Use uuid v5 for reproducible idntifier ;

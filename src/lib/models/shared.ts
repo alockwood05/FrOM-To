@@ -1,11 +1,14 @@
 // shared types
-export type Status =
-	| 'idea' // Ideation
-	| 'planned' // Planning
-	| 'up-next' // Prioritization
-	| 'in-progress' // Execution
-	| 'pending-approval' // Verification
-	| 'complete'; // Completion
+export type Status = 'idea' | 'intention' | 'commitment' | 'current' | 'draft' | 'completion';
+
+const StatusTransitions: Record<Status, Status[]> = {
+	idea: ['intention'],
+	intention: ['commitment', 'idea'],
+	commitment: ['current', 'intention'],
+	current: ['draft', 'commitment', 'idea'],
+	draft: ['completion', 'current', 'idea'],
+	completion: []
+};
 
 // shared functions
 export function cleanTitle(title: string) {

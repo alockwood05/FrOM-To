@@ -1,6 +1,7 @@
 import { cleanTitle } from './shared';
-import { v6 as uuidv6 } from 'uuid';
+import { v5 as uuidv5 } from 'uuid';
 
+export const ALIGNMENT_NAMESPACE = '1d7eccab-a6ca-43f7-bc56-906e4541d430';
 export interface Alignment {
 	uuid: string; // Unique identifier for the alignment
 	title: string; // Core value name, e.g., "Health"
@@ -20,9 +21,10 @@ export function createAlignment(
 	description: string = '',
 	whyUUIDs: string[] = []
 ): Alignment {
+	title = cleanTitle(title);
 	return {
-		uuid: uuidv6(),
-		title: cleanTitle(title),
+		uuid: uuidv5(title, ALIGNMENT_NAMESPACE),
+		title,
 		description,
 		isArchived: false,
 		createdAt: new Date(),
