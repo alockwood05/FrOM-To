@@ -6,19 +6,19 @@ import { v6 as uuidv6 } from 'uuid';
 
 export interface Milestone {
 	uuid: string; // Unique identifier
+	journeyUUID: string; // ID of the associated Journey
 	title: string; // Name of the milestone
 	description: string; // Details about the milestone
 	dueDate?: Date; // Optional deadline for the milestone
 	status: Status; // Current state
-	journeyUUID: string; // ID of the associated Journey
 	createdAt: Date; // Timestamp when the milestone was created
 	updatedAt: Date; // Timestamp when the milestone was last updated
 }
 
 export function createMilestone(
+	journeyUUID: string,
 	title: string,
 	description: string = '',
-	journeyUUID: string,
 	dueDate?: Date
 ): Milestone {
 	const nowDate = new Date();

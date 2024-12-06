@@ -9,6 +9,7 @@ export interface Step {
 // Waypoint: An achievable chunk of work.
 export interface Waypoint {
 	uuid: string;
+	journeyUUID: string;
 	title: string;
 	description: string;
 	status: Status;
@@ -17,9 +18,14 @@ export interface Waypoint {
 	updatedAt: Date;
 }
 
-export function createWaypoint(title: string, description: string = ''): Waypoint {
+export function createWaypoint(
+	journeyUUID: string,
+	title: string,
+	description: string = 'An achievable block of work that is worth acknowledging'
+): Waypoint {
 	return {
 		uuid: uuidv6(), // Unique identifier
+		journeyUUID: journeyUUID,
 		title: cleanTitle(title),
 		description,
 		status: 'idea', // Initial status

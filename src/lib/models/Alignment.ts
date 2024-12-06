@@ -16,11 +16,7 @@ export interface Alignment {
  * @param name - Name of the alignment.
  * @param description - A brief explanation or guiding principle of the alignment. Default is an empty string.
  */
-export function createAlignment(
-	title: string,
-	description: string = '',
-	whyUUIDs: string[] = []
-): Alignment {
+export function createAlignment(title: string, description: string = ''): Alignment {
 	title = cleanTitle(title);
 	return {
 		uuid: uuidv5(title, ALIGNMENT_NAMESPACE),
