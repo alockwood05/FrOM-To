@@ -1,57 +1,37 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { createAlignment } from './Alignment';
-import { generateUUID } from '$lib/utils/uuid';
+import { describe, it, expect, vi } from 'vitest';
+import { ALIGNMENT_NAMESPACE, createAlignment } from './Alignment';
+import { v5 as uuidv5 } from 'uuid';
 
-vi.mock('$lib/utils/uuid');
+describe('createAlignment', () => {
+	it('should create an alignment with the given title and default values', () => {
+		const title = 'Health';
+		const alignment = createAlignment(title);
 
-describe('Alignment Model', () => {
-	beforeEach(() => {
-		vi.mocked(generateUUID).mockReturnValue('test-uuid');
+		expect(alignment.uuid).toBe(uuidv5(title, ALIGNMENT_NAMESPACE));
+		expect(alignment.title).toBe('Health');
+		expect(alignment.description).toBe('');
+		expect(alignment.isArchived).toBe(false);
+		expect(alignment.createdAt).toBeInstanceOf(Date);
+		expect(alignment.updatedAt).toBeInstanceOf(Date);
 	});
 
-	it('should create an alignment with the given name and default description', () => {
-		const name = 'Health';
-		const alignment = createAlignment(name);
+	it('should create an alignment with the optional description', () => {
+		const title = 'Health';
+		const description = 'A brief explanation';
+		const alignment = createAlignment(title, description);
 
-		expect(alignment).toEqual({
-			uuid: 'test-uuid',
-			name,
-			description: '',
-			whys: [],
-			tags: [],
-			createdAt: expect.any(Date),
-			updatedAt: expect.any(Date),
-			status: 'active'
-		});
+		expect(alignment.uuid).toBe(uuidv5(title, ALIGNMENT_NAMESPACE));
+		expect(alignment.title).toBe('Health');
+		expect(alignment.description).toBe('A brief explanation');
+		expect(alignment.isArchived).toBe(false);
+		expect(alignment.createdAt.getTime()).toBeCloseTo(Date.now(), -1);
+		expect(alignment.updatedAt.getTime()).toBeCloseTo(Date.now(), -1);
 	});
 
-	it('should create an alignment with the given name and description', () => {
-		const name = 'Integrity';
-		const description = 'Being honest and having strong moral principles';
-		const alignment = createAlignment(name, description);
-
-		expect(alignment).toEqual({
-			uuid: 'test-uuid',
-			name,
-			description,
-			whys: [],
-			tags: [],
-			createdAt: expect.any(Date),
-			updatedAt: expect.any(Date),
-			status: 'active'
-		});
-	});
-
-	it('should throw an error if the name is empty', () => {
-		expect(() => createAlignment('')).toThrow(
-			'Alignment name must be between 1 and 100 characters.'
-		);
-	});
-
-	it('should throw an error if the name is longer than 100 characters', () => {
-		const longName = 'a'.repeat(101);
-		expect(() => createAlignment(longName)).toThrow(
-			'Alignment name must be between 1 and 100 characters.'
-		);
+	it('should trim the title, and have the correct UUID', () => {
+		const title = ' Health ';
+		const alignment = createAlignment(title);
+		expect(alignment.title).toBe('Health');
+		expect(alignment.uuid).toBe(uuidv5('Health', ALIGNMENT_NAMESPACE));
 	});
 });

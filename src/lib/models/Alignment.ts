@@ -1,15 +1,14 @@
-import type { Why } from '$lib/models/Why';
-import { generateUUID } from '$lib/utils/uuid';
+import { cleanTitle } from './shared';
+import { v5 as uuidv5 } from 'uuid';
 
+export const ALIGNMENT_NAMESPACE = '1d7eccab-a6ca-43f7-bc56-906e4541d430';
 export interface Alignment {
 	uuid: string; // Unique identifier for the alignment
-	name: string; // Core value name, e.g., "Health"
+	title: string; // Core value name, e.g., "Health"
 	description: string; // Brief explanation or guiding principle
-	whys: Why[]; // Related motivations
-	tags: string[]; // Tags for categorization
+	isArchived: boolean; // Whether the alignment is archived
 	createdAt: Date; // Timestamp of creation
 	updatedAt: Date; // Timestamp of last update
-	status: 'active' | 'archived'; // State of the alignment
 }
 
 /**
@@ -17,19 +16,14 @@ export interface Alignment {
  * @param name - Name of the alignment.
  * @param description - A brief explanation or guiding principle of the alignment. Default is an empty string.
  */
-export function createAlignment(name: string, description: string = ''): Alignment {
-	if (name.length === 0 || name.length > 100) {
-		throw new Error('Alignment name must be between 1 and 100 characters.');
-	}
-
+export function createAlignment(title: string, description: string = ''): Alignment {
+	title = cleanTitle(title);
 	return {
-		uuid: generateUUID(),
-		name,
+		uuid: uuidv5(title, ALIGNMENT_NAMESPACE),
+		title,
 		description,
-		whys: [],
-		tags: [],
+		isArchived: false,
 		createdAt: new Date(),
-		updatedAt: new Date(),
-		status: 'active'
+		updatedAt: new Date()
 	};
 }
