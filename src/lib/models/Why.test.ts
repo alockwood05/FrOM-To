@@ -56,11 +56,6 @@ describe('Why Store', () => {
 		}
 	];
 
-	const mockLocalStorage = {
-		getItem: vi.fn().mockReturnValue(JSON.stringify(mockData)),
-		setItem: vi.fn()
-	};
-
 	it('should save changes to localStorage', () => {
 		vi.spyOn(localStorage, 'getItem');
 		vi.spyOn(localStorage, 'setItem');
