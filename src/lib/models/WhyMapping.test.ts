@@ -59,6 +59,7 @@ describe('WhyMapping Store', () => {
 	];
 	describe('#set()', () => {
 		it('should save changes to localStorage', () => {
+			whyMappingStore.initialize();
 			vi.spyOn(localStorage, 'getItem');
 			vi.spyOn(localStorage, 'setItem');
 

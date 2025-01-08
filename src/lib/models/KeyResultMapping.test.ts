@@ -38,6 +38,7 @@ describe('KeyResultMapping Store', () => {
 	];
 
 	it('should save changes to localStorage', () => {
+		keyResultMappingStore.initialize();
 		vi.spyOn(localStorage, 'getItem');
 		vi.spyOn(localStorage, 'setItem');
 

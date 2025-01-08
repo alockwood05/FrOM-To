@@ -1,5 +1,5 @@
 import type { Status } from '$lib/models/shared';
-import { cleanTitle } from '$lib/models/shared';
+import { cleanTitle, writableModel } from '$lib/models/shared';
 import { v6 as uuidv6 } from 'uuid';
 
 // Milestone Model: Tracks major progress markers or achievements within a journey.
@@ -36,17 +36,4 @@ export function createMilestone(
 }
 
 // ================== Milestone Store ==================
-import { writable } from 'svelte/store';
-const LOCAL_STORAGE_KEY = MILESTONE_NAMESPACE;
-
-// Load initial data from localStorage
-const storedData = localStorage.getItem(LOCAL_STORAGE_KEY);
-const initialData: Milestone[] = storedData ? JSON.parse(storedData) : [];
-
-// Create a writable store with the initial data
-export const milestoneStore = writable<Milestone[]>(initialData);
-
-// Subscribe to the store and save changes to localStorage
-milestoneStore.subscribe((data: Milestone[]) => {
-	localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
-});
+export const milestoneStore = writableModel<Milestone[]>(MILESTONE_NAMESPACE);

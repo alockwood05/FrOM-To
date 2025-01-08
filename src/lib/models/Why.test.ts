@@ -57,6 +57,7 @@ describe('Why Store', () => {
 	];
 
 	it('should save changes to localStorage', () => {
+		whyStore.initialize();
 		vi.spyOn(localStorage, 'getItem');
 		vi.spyOn(localStorage, 'setItem');
 

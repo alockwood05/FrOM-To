@@ -62,6 +62,7 @@ describe('Milestone Store', () => {
 	];
 
 	it('should save changes to localStorage', () => {
+		milestoneStore.initialize();
 		vi.spyOn(localStorage, 'getItem');
 		vi.spyOn(localStorage, 'setItem');
 

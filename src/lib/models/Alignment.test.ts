@@ -57,6 +57,7 @@ describe('Alignment Store', () => {
 	];
 
 	it('should save changes to localStorage', () => {
+		alignmentStore.initialize();
 		vi.spyOn(localStorage, 'getItem');
 		vi.spyOn(localStorage, 'setItem');
 

@@ -59,6 +59,7 @@ describe('Journey Store', () => {
 	];
 
 	it('should save changes to localStorage', () => {
+		journeyStore.initialize();
 		vi.spyOn(localStorage, 'getItem');
 		vi.spyOn(localStorage, 'setItem');
 

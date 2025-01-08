@@ -72,6 +72,7 @@ describe('Waypoint Store', () => {
 	];
 
 	it('should save changes to localStorage', () => {
+		waypointStore.initialize();
 		vi.spyOn(localStorage, 'getItem');
 		vi.spyOn(localStorage, 'setItem');
 

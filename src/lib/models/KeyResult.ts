@@ -1,6 +1,5 @@
 // KeyResult model. A centralized list of all Key Results
-
-import { cleanTitle } from './shared';
+import { cleanTitle, writableModel } from './shared';
 import { v5 as uuidv5 } from 'uuid';
 
 export const KR_NAMESPACE = '1a3c758f-03ac-4246-b6b1-e27b2e3e6b2c'; // Random UUID (V4)
@@ -65,18 +64,4 @@ export function createKeyResult(title: string, description: string = ''): KeyRes
 }
 
 // ================== KeyResult Store ==================
-import { writable } from 'svelte/store';
-
-const LOCAL_STORAGE_KEY = KR_NAMESPACE;
-
-// Load initial data from localStorage
-const storedData = localStorage.getItem(LOCAL_STORAGE_KEY);
-const initialData: KeyResult[] = storedData ? JSON.parse(storedData) : [];
-
-// Create a writable store with the initial data
-export const keyResultStore = writable<KeyResult[]>(initialData);
-
-// Subscribe to the store and save changes to localStorage
-keyResultStore.subscribe((data: KeyResult[]) => {
-	localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
-});
+export const keyResultStore = writableModel<KeyResult[]>(KR_NAMESPACE);

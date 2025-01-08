@@ -1,4 +1,4 @@
-import { cleanTitle } from './shared';
+import { cleanTitle, writableModel } from './shared';
 import { v5 as uuidv5 } from 'uuid';
 
 export const ALIGNMENT_NAMESPACE = '1d7eccab-a6ca-43f7-bc56-906e4541d430';
@@ -29,18 +29,5 @@ export function createAlignment(title: string, description: string = ''): Alignm
 }
 
 // ================== Alignment Store ==================
-import { writable } from 'svelte/store';
 
-const LOCAL_STORAGE_KEY = ALIGNMENT_NAMESPACE;
-
-// Load initial data from localStorage
-const storedData = localStorage.getItem(LOCAL_STORAGE_KEY);
-const initialData: Alignment[] = storedData ? JSON.parse(storedData) : [];
-
-// Create a writable store with the initial data
-export const alignmentStore = writable<Alignment[]>(initialData);
-
-// Subscribe to the store and save changes to localStorage
-alignmentStore.subscribe((data: Alignment[]) => {
-	localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
-});
+export const alignmentStore = writableModel<Alignment[]>(ALIGNMENT_NAMESPACE);
