@@ -27,3 +27,20 @@ export function createAlignment(title: string, description: string = ''): Alignm
 		updatedAt: new Date()
 	};
 }
+
+// ================== Alignment Store ==================
+import { writable } from 'svelte/store';
+
+const LOCAL_STORAGE_KEY = ALIGNMENT_NAMESPACE;
+
+// Load initial data from localStorage
+const storedData = localStorage.getItem(LOCAL_STORAGE_KEY);
+const initialData: Alignment[] = storedData ? JSON.parse(storedData) : [];
+
+// Create a writable store with the initial data
+export const alignmentStore = writable<Alignment[]>(initialData);
+
+// Subscribe to the store and save changes to localStorage
+alignmentStore.subscribe((data: Alignment[]) => {
+	localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
+});

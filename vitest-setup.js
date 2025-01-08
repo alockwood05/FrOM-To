@@ -34,4 +34,5 @@ vi.stubGlobal('localStorage', localStorageMock);
 
 afterEach(() => {
   localStorageMock.clear();
+  vi.restoreAllMocks();
 });

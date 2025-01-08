@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { createKeyResult, KR_NAMESPACE } from './KeyResult';
+import { createKeyResult, keyResultStore, KR_NAMESPACE, type KeyResult } from './KeyResult';
 import { v5 as uuidv5 } from 'uuid'; // no need to mock uuidv5 since it is deterministic
 
 describe('createKeyResult', () => {
@@ -25,5 +25,36 @@ describe('createKeyResult', () => {
 		expect(keyResult.uuid).toBe(uuidv5(title.trim(), KR_NAMESPACE));
 		expect(keyResult.title).toBe(title.trim());
 		expect(keyResult.description).toBe(description);
+	});
+});
+
+describe('KeyResult Store', () => {
+	const mockData: KeyResult[] = [
+		{
+			uuid: 'test-uuid-1',
+			title: 'Test Title 1',
+			description: 'Test Description 1',
+			krStatus: 'not-started',
+			archived: false,
+			createdAt: new Date(),
+			updatedAt: new Date()
+		},
+		{
+			uuid: 'test-uuid-2',
+			title: 'Test Title 2',
+			description: 'Test Description 2',
+			krStatus: 'not-started',
+			archived: false,
+			createdAt: new Date(),
+			updatedAt: new Date()
+		}
+	];
+
+	it('should save changes to localStorage', () => {
+		vi.spyOn(localStorage, 'getItem');
+		vi.spyOn(localStorage, 'setItem');
+
+		keyResultStore.set(mockData);
+		expect(localStorage.setItem).toHaveBeenCalledWith(KR_NAMESPACE, JSON.stringify(mockData));
 	});
 });

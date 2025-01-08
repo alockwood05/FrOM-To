@@ -1,5 +1,7 @@
 import { cleanTitle, type Status } from './shared';
 import { v6 as uuidv6 } from 'uuid';
+
+export const WAYPOINT_NAMESPACE = 'eab20db3-1e46-49ea-9188-a0d2dcff7e31';
 export interface Step {
 	id: number;
 	description: string;
@@ -34,3 +36,18 @@ export function createWaypoint(
 		updatedAt: new Date()
 	};
 }
+// ================== Waypoint Store ==================
+import { writable } from 'svelte/store';
+const LOCAL_STORAGE_KEY = WAYPOINT_NAMESPACE;
+
+// Load initial data from localStorage
+const storedData = localStorage.getItem(LOCAL_STORAGE_KEY);
+const initialData: Waypoint[] = storedData ? JSON.parse(storedData) : [];
+
+// Create a writable store with the initial data
+export const waypointStore = writable<Waypoint[]>(initialData);
+
+// Subscribe to the store and save changes to localStorage
+waypointStore.subscribe((data: Waypoint[]) => {
+	localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
+});

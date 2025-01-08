@@ -63,3 +63,20 @@ export function createKeyResult(title: string, description: string = ''): KeyRes
 		updatedAt: new Date()
 	};
 }
+
+// ================== KeyResult Store ==================
+import { writable } from 'svelte/store';
+
+const LOCAL_STORAGE_KEY = KR_NAMESPACE;
+
+// Load initial data from localStorage
+const storedData = localStorage.getItem(LOCAL_STORAGE_KEY);
+const initialData: KeyResult[] = storedData ? JSON.parse(storedData) : [];
+
+// Create a writable store with the initial data
+export const keyResultStore = writable<KeyResult[]>(initialData);
+
+// Subscribe to the store and save changes to localStorage
+keyResultStore.subscribe((data: KeyResult[]) => {
+	localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
+});

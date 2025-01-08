@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { createWaypoint } from './Waypoint';
+import { createWaypoint, WAYPOINT_NAMESPACE, waypointStore } from './Waypoint';
 import { v6 as uuidv6 } from 'uuid';
 
 vi.mock('uuid', () => ({
@@ -44,5 +44,38 @@ describe('createWaypoint', () => {
 		const waypoint = createWaypoint(journeyUUID, title);
 
 		expect(waypoint.title).toBe('New Waypoint');
+	});
+});
+
+describe('Waypoint Store', () => {
+	const mockData: Waypoint[] = [
+		{
+			uuid: 'waypoint-uuid-1',
+			journeyUUID: 'journey-uuid-1',
+			title: 'Waypoint 1',
+			description: 'Description 1',
+			status: 'idea',
+			steps: [],
+			createdAt: new Date(),
+			updatedAt: new Date()
+		},
+		{
+			uuid: 'waypoint-uuid-2',
+			journeyUUID: 'journey-uuid-2',
+			title: 'Waypoint 2',
+			description: 'Description 2',
+			status: 'idea',
+			steps: [],
+			createdAt: new Date(),
+			updatedAt: new Date()
+		}
+	];
+
+	it('should save changes to localStorage', () => {
+		vi.spyOn(localStorage, 'getItem');
+		vi.spyOn(localStorage, 'setItem');
+
+		waypointStore.set(mockData);
+		expect(localStorage.setItem).toHaveBeenCalledWith(WAYPOINT_NAMESPACE, JSON.stringify(mockData));
 	});
 });
