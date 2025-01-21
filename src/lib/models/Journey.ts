@@ -1,6 +1,7 @@
 // Journey Model. A project tied to values and outcomes.
 import { v6 as uuidv6 } from 'uuid';
-import { cleanTitle, writableModel, type Status } from './shared';
+import { writableModel } from './shared/writableModel';
+import { cleanTitle, type Status } from './shared';
 
 export const JOURNEY_NAMESPACE = '695f3dc0-d1cf-49f7-a747-ec6799585f3c';
 export interface Journey {

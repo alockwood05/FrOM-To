@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import {
 	createWhyMapping,
 	type WhyMapping,
@@ -57,13 +57,23 @@ describe('WhyMapping Store', () => {
 			targetUUID: 'target-uuid-2'
 		}
 	];
+
+	beforeEach(() => {
+		vi.mock('svelte', () => ({
+			getContext: vi.fn(),
+			hasContext: vi.fn(),
+			setContext: vi.fn(),
+			onMount: vi.fn((callback) => callback())
+		}));
+	});
+
 	describe('#set()', () => {
 		it('should save changes to localStorage', () => {
-			whyMappingStore.initialize();
+			const whyMappings = whyMappingStore();
 			vi.spyOn(localStorage, 'getItem');
 			vi.spyOn(localStorage, 'setItem');
 
-			whyMappingStore.set(mockData);
+			whyMappings.set(mockData);
 			expect(localStorage.setItem).toHaveBeenCalledWith(
 				WHY_MAPPING_NAMESPACE,
 				JSON.stringify(mockData)

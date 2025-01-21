@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { createMilestone, type Milestone, MILESTONE_NAMESPACE, milestoneStore } from './Milestone';
 import { v6 as uuidv6 } from 'uuid';
 
@@ -61,12 +61,21 @@ describe('Milestone Store', () => {
 		}
 	];
 
+	beforeEach(() => {
+		vi.mock('svelte', () => ({
+			getContext: vi.fn(),
+			hasContext: vi.fn(),
+			setContext: vi.fn(),
+			onMount: vi.fn((callback) => callback())
+		}));
+	});
+
 	it('should save changes to localStorage', () => {
-		milestoneStore.initialize();
+		const milestones = milestoneStore();
 		vi.spyOn(localStorage, 'getItem');
 		vi.spyOn(localStorage, 'setItem');
 
-		milestoneStore.set(mockData);
+		milestones.set(mockData);
 		expect(localStorage.setItem).toHaveBeenCalledWith(
 			MILESTONE_NAMESPACE,
 			JSON.stringify(mockData)

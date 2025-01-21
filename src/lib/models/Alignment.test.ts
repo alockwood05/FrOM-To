@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { ALIGNMENT_NAMESPACE, createAlignment, type Alignment, alignmentStore } from './Alignment';
 import { v5 as uuidv5 } from 'uuid';
 
@@ -44,7 +44,9 @@ describe('Alignment Store', () => {
 			description: 'Test Description 1',
 			isArchived: false,
 			createdAt: new Date(),
-			updatedAt: new Date()
+			updatedAt: new Date(),
+			desire: '',
+			question: ''
 		},
 		{
 			uuid: 'test-uuid-2',
@@ -52,16 +54,28 @@ describe('Alignment Store', () => {
 			description: 'Test Description 2',
 			isArchived: false,
 			createdAt: new Date(),
-			updatedAt: new Date()
+			updatedAt: new Date(),
+			desire: '',
+			question: ''
 		}
 	];
 
+	beforeEach(() => {
+		vi.mock('svelte', () => ({
+			getContext: vi.fn(),
+			hasContext: vi.fn(),
+			setContext: vi.fn(),
+			onMount: vi.fn((callback) => callback())
+		}));
+	});
+
 	it('should save changes to localStorage', () => {
-		alignmentStore.initialize();
+		const alignments = alignmentStore();
+
 		vi.spyOn(localStorage, 'getItem');
 		vi.spyOn(localStorage, 'setItem');
 
-		alignmentStore.set(mockData);
+		alignments.set(mockData);
 		expect(localStorage.setItem).toHaveBeenCalledWith(
 			ALIGNMENT_NAMESPACE,
 			JSON.stringify(mockData)

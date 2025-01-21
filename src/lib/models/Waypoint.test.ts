@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { createWaypoint, WAYPOINT_NAMESPACE, waypointStore } from './Waypoint';
 import { v6 as uuidv6 } from 'uuid';
 
@@ -71,12 +71,21 @@ describe('Waypoint Store', () => {
 		}
 	];
 
+	beforeEach(() => {
+		vi.mock('svelte', () => ({
+			getContext: vi.fn(),
+			hasContext: vi.fn(),
+			setContext: vi.fn(),
+			onMount: vi.fn((callback) => callback())
+		}));
+	});
+
 	it('should save changes to localStorage', () => {
-		waypointStore.initialize();
+		const waypoints = waypointStore();
 		vi.spyOn(localStorage, 'getItem');
 		vi.spyOn(localStorage, 'setItem');
 
-		waypointStore.set(mockData);
+		waypoints.set(mockData);
 		expect(localStorage.setItem).toHaveBeenCalledWith(WAYPOINT_NAMESPACE, JSON.stringify(mockData));
 	});
 });

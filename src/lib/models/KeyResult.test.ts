@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { createKeyResult, keyResultStore, KR_NAMESPACE, type KeyResult } from './KeyResult';
 import { v5 as uuidv5 } from 'uuid'; // no need to mock uuidv5 since it is deterministic
 
@@ -50,12 +50,21 @@ describe('KeyResult Store', () => {
 		}
 	];
 
+	beforeEach(() => {
+		vi.mock('svelte', () => ({
+			getContext: vi.fn(),
+			hasContext: vi.fn(),
+			setContext: vi.fn(),
+			onMount: vi.fn((callback) => callback())
+		}));
+	});
+
 	it('should save changes to localStorage', () => {
-		keyResultStore.initialize();
+		const keyResults = keyResultStore();
 		vi.spyOn(localStorage, 'getItem');
 		vi.spyOn(localStorage, 'setItem');
 
-		keyResultStore.set(mockData);
+		keyResults.set(mockData);
 		expect(localStorage.setItem).toHaveBeenCalledWith(KR_NAMESPACE, JSON.stringify(mockData));
 	});
 });

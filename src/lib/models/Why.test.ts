@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, vi, type Mock } from 'vitest';
+import { describe, it, expect, beforeAll, vi, type Mock, beforeEach } from 'vitest';
 import { createWhy, WHY_NAMESPACE, WhyKind, type Why, whyStore } from './Why';
 import { v5 as uuidv5 } from 'uuid';
 
@@ -56,12 +56,21 @@ describe('Why Store', () => {
 		}
 	];
 
+	beforeEach(() => {
+		vi.mock('svelte', () => ({
+			getContext: vi.fn(),
+			hasContext: vi.fn(),
+			setContext: vi.fn(),
+			onMount: vi.fn((callback) => callback())
+		}));
+	});
+
 	it('should save changes to localStorage', () => {
-		whyStore.initialize();
+		const whys = whyStore();
 		vi.spyOn(localStorage, 'getItem');
 		vi.spyOn(localStorage, 'setItem');
 
-		whyStore.set(mockData);
+		whys.set(mockData);
 		expect(localStorage.setItem).toHaveBeenCalledWith(WHY_NAMESPACE, JSON.stringify(mockData));
 	});
 });

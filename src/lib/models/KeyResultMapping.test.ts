@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import {
 	createKeyResultMapping,
 	type KeyResultMapping,
@@ -37,12 +37,21 @@ describe('KeyResultMapping Store', () => {
 		}
 	];
 
+	beforeEach(() => {
+		vi.mock('svelte', () => ({
+			getContext: vi.fn(),
+			hasContext: vi.fn(),
+			setContext: vi.fn(),
+			onMount: vi.fn((callback) => callback())
+		}));
+	});
+
 	it('should save changes to localStorage', () => {
-		keyResultMappingStore.initialize();
+		const keyResultMappings = keyResultMappingStore();
 		vi.spyOn(localStorage, 'getItem');
 		vi.spyOn(localStorage, 'setItem');
 
-		keyResultMappingStore.set(mockData);
+		keyResultMappings.set(mockData);
 		expect(localStorage.setItem).toHaveBeenCalledWith(
 			KEY_RESULT_MAPPING_NAMESPACE,
 			JSON.stringify(mockData)

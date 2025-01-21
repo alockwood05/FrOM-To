@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { createJourney, type Journey, journeyStore, JOURNEY_NAMESPACE } from '$lib/models/Journey';
 
 vi.mock('uuid', () => ({
@@ -58,12 +58,21 @@ describe('Journey Store', () => {
 		}
 	];
 
+	beforeEach(() => {
+		vi.mock('svelte', () => ({
+			getContext: vi.fn(),
+			hasContext: vi.fn(),
+			setContext: vi.fn(),
+			onMount: vi.fn((callback) => callback())
+		}));
+	});
+
 	it('should save changes to localStorage', () => {
-		journeyStore.initialize();
+		const journeys = journeyStore();
 		vi.spyOn(localStorage, 'getItem');
 		vi.spyOn(localStorage, 'setItem');
 
-		journeyStore.set(mockData);
+		journeys.set(mockData);
 		expect(localStorage.setItem).toHaveBeenCalledWith(JOURNEY_NAMESPACE, JSON.stringify(mockData));
 	});
 });
