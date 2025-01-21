@@ -1,9 +1,9 @@
-import { cleanTitle } from './shared';
+import { cleanTitle, writableModel } from './shared';
 import { v5 as uuidv5 } from 'uuid';
 
 export const enum WhyKind {
 	DESIRE = 'desire',
-	OBLIGATION = 'obligation'
+	NEED = 'need'
 }
 
 export const WHY_NAMESPACE = '3008e34d-d2f8-4cdc-b846-adf9e0cf0ffe';
@@ -34,3 +34,6 @@ export function createWhy(
 		updatedAt: new Date()
 	};
 }
+
+// ================== Why Store ==================
+export const whyStore = writableModel<Why[]>(WHY_NAMESPACE);

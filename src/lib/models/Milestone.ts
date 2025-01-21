@@ -1,9 +1,9 @@
 import type { Status } from '$lib/models/shared';
-import { cleanTitle } from '$lib/models/shared';
+import { cleanTitle, writableModel } from '$lib/models/shared';
 import { v6 as uuidv6 } from 'uuid';
 
 // Milestone Model: Tracks major progress markers or achievements within a journey.
-
+export const MILESTONE_NAMESPACE = '5573a74e-a039-4222-b8f6-2969439f7856';
 export interface Milestone {
 	uuid: string; // Unique identifier
 	journeyUUID: string; // ID of the associated Journey
@@ -34,3 +34,6 @@ export function createMilestone(
 		updatedAt: nowDate
 	};
 }
+
+// ================== Milestone Store ==================
+export const milestoneStore = writableModel<Milestone[]>(MILESTONE_NAMESPACE);

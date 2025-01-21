@@ -1,5 +1,7 @@
-import { cleanTitle, type Status } from './shared';
+import { cleanTitle, writableModel, type Status } from './shared';
 import { v6 as uuidv6 } from 'uuid';
+
+export const WAYPOINT_NAMESPACE = 'eab20db3-1e46-49ea-9188-a0d2dcff7e31';
 export interface Step {
 	id: number;
 	description: string;
@@ -34,3 +36,6 @@ export function createWaypoint(
 		updatedAt: new Date()
 	};
 }
+// ================== Waypoint Store ==================
+
+export const waypointStore = writableModel<Waypoint[]>(WAYPOINT_NAMESPACE);

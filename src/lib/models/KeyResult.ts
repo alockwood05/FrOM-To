@@ -1,6 +1,5 @@
 // KeyResult model. A centralized list of all Key Results
-
-import { cleanTitle } from './shared';
+import { cleanTitle, writableModel } from './shared';
 import { v5 as uuidv5 } from 'uuid';
 
 export const KR_NAMESPACE = '1a3c758f-03ac-4246-b6b1-e27b2e3e6b2c'; // Random UUID (V4)
@@ -63,3 +62,6 @@ export function createKeyResult(title: string, description: string = ''): KeyRes
 		updatedAt: new Date()
 	};
 }
+
+// ================== KeyResult Store ==================
+export const keyResultStore = writableModel<KeyResult[]>(KR_NAMESPACE);

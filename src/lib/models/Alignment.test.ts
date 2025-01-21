@@ -1,5 +1,5 @@
-import { describe, it, expect, vi } from 'vitest';
-import { ALIGNMENT_NAMESPACE, createAlignment } from './Alignment';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { ALIGNMENT_NAMESPACE, createAlignment, type Alignment, alignmentStore } from './Alignment';
 import { v5 as uuidv5 } from 'uuid';
 
 describe('createAlignment', () => {
@@ -33,5 +33,52 @@ describe('createAlignment', () => {
 		const alignment = createAlignment(title);
 		expect(alignment.title).toBe('Health');
 		expect(alignment.uuid).toBe(uuidv5('Health', ALIGNMENT_NAMESPACE));
+	});
+});
+
+describe('Alignment Store', () => {
+	const mockData: Alignment[] = [
+		{
+			uuid: 'test-uuid-1',
+			title: 'Test Title 1',
+			description: 'Test Description 1',
+			isArchived: false,
+			createdAt: new Date(),
+			updatedAt: new Date(),
+			desire: '',
+			question: ''
+		},
+		{
+			uuid: 'test-uuid-2',
+			title: 'Test Title 2',
+			description: 'Test Description 2',
+			isArchived: false,
+			createdAt: new Date(),
+			updatedAt: new Date(),
+			desire: '',
+			question: ''
+		}
+	];
+
+	beforeEach(() => {
+		vi.mock('svelte', () => ({
+			getContext: vi.fn(),
+			hasContext: vi.fn(),
+			setContext: vi.fn(),
+			onMount: vi.fn((callback) => callback())
+		}));
+	});
+
+	it('should save changes to localStorage', () => {
+		const alignments = alignmentStore();
+
+		vi.spyOn(localStorage, 'getItem');
+		vi.spyOn(localStorage, 'setItem');
+
+		alignments.set(mockData);
+		expect(localStorage.setItem).toHaveBeenCalledWith(
+			ALIGNMENT_NAMESPACE,
+			JSON.stringify(mockData)
+		);
 	});
 });
