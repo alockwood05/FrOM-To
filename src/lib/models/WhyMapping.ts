@@ -32,4 +32,4 @@ export function createWhyMapping(
 }
 
 // ================== WhyMapping Store ==================
-export const whyMappingStore = writableModel<WhyMapping[]>(WHY_MAPPING_NAMESPACE);
+export const whyMappingStore = writableModel<WhyMapping[]>(WHY_MAPPING_NAMESPACE, []);

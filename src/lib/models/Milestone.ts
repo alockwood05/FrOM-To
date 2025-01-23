@@ -36,4 +36,4 @@ export function createMilestone(
 }
 
 // ================== Milestone Store ==================
-export const milestoneStore = writableModel<Milestone[]>(MILESTONE_NAMESPACE);
+export const milestoneStore = writableModel<Milestone[]>(MILESTONE_NAMESPACE, []);

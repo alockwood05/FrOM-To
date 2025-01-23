@@ -36,4 +36,4 @@ export function createWhy(
 }
 
 // ================== Why Store ==================
-export const whyStore = writableModel<Why[]>(WHY_NAMESPACE);
+export const whyStore = writableModel<Why[]>(WHY_NAMESPACE, []);

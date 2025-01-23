@@ -38,4 +38,4 @@ export function createWaypoint(
 }
 // ================== Waypoint Store ==================
 
-export const waypointStore = writableModel<Waypoint[]>(WAYPOINT_NAMESPACE);
+export const waypointStore = writableModel<Waypoint[]>(WAYPOINT_NAMESPACE, []);

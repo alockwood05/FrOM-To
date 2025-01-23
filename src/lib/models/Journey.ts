@@ -28,4 +28,4 @@ export function createJourney(title: string, description: string = ''): Journey 
 
 // ================== Journey Store ==================
 
-export const journeyStore = writableModel<Journey[]>(JOURNEY_NAMESPACE);
+export const journeyStore = writableModel<Journey[]>(JOURNEY_NAMESPACE, []);

@@ -23,13 +23,17 @@ export const useWritable = <T>(name: string, value: T) => useSharedStore(name, w
 // export const useReadable = <T>(name: string, value: T) => useSharedStore(name, readable, value);
 
 // Implementation for a model store.
-function fetchFromLocalStorage(namespace: string) {
+function fetchFromLocalStorage<T>(namespace: string, defaultValue: T) {
 	const storedData = localStorage.getItem(namespace);
-	return storedData ? JSON.parse(storedData) : [];
+	if (!storedData) {
+		localStorage.setItem(namespace, JSON.stringify(defaultValue));
+		return defaultValue;
+	}
+	return JSON.parse(storedData);
 }
 
-function initializeWritableModel<T>(namespace: string) {
-	const localData = fetchFromLocalStorage(namespace);
+function initializeWritableModel<T>(namespace: string, defaultValue: T) {
+	const localData = fetchFromLocalStorage<T>(namespace, defaultValue);
 	const writableStore = useWritable<T | null>(namespace, localData);
 	onMount(() => {
 		// returning a cleanup function, which is will in this case be the unsubscribe function returned from subscribe
@@ -42,6 +46,6 @@ function initializeWritableModel<T>(namespace: string) {
 // Method to setup an initializer for the store
 // Used first in a Model e.g. Alignment.ts where `alignmentStore = writableModel(NAMESPACE)`
 // Then used in a component e.g. Alignment.svelte where `const alignments = alignmentStore()`
-export function writableModel<T>(namespace: string) {
-	return () => initializeWritableModel<T>(namespace);
+export function writableModel<T>(namespace: string, defaultValue: T) {
+	return () => initializeWritableModel<T>(namespace, defaultValue);
 }

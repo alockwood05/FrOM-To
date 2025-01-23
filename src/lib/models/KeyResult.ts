@@ -64,4 +64,4 @@ export function createKeyResult(title: string, description: string = ''): KeyRes
 }
 
 // ================== KeyResult Store ==================
-export const keyResultStore = writableModel<KeyResult[]>(KR_NAMESPACE);
+export const keyResultStore = writableModel<KeyResult[]>(KR_NAMESPACE, []);

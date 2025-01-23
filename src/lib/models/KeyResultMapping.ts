@@ -24,5 +24,6 @@ export function createKeyResultMapping(
 
 // ================== KeyResultMapping Store ==================
 export const keyResultMappingStore = writableModel<KeyResultMapping[]>(
-	KEY_RESULT_MAPPING_NAMESPACE
+	KEY_RESULT_MAPPING_NAMESPACE,
+	[]
 );

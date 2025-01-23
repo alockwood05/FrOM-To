@@ -53,4 +53,4 @@ and it may support the aligned future that you call in, leveraging your inner tr
 
 // ================== Alignment Store ==================
 
-export const alignmentStore = writableModel<Alignment[]>(ALIGNMENT_NAMESPACE);
+export const alignmentStore = writableModel<Alignment[]>(ALIGNMENT_NAMESPACE, []);
